@@ -3,19 +3,26 @@ import EmojiField from "@/components/EmojiField.vue";
 import ArrowCircleRight from "@/assets/icons/arrow-circle-right.svg";
 import Emoji from "@/types/Emoji";
 import { ref, computed } from "vue";
+const maxCharsTextArea = 280;
 const text = ref("");
 const emoji = ref<Emoji | null>(null);
 const chartCount = computed(() => text.value.length);
+const handleTextInput = (event: Event) => {
+  const textarea = event.target as HTMLTextAreaElement;
+  if (textarea.value.length <= maxCharsTextArea) text.value = textarea.value;
+  else text.value = textarea.value = textarea.value.slice(0, maxCharsTextArea);
+};
 </script>
 <template>
   <form class="entry-form" @submit.prevent>
     <textarea
-      v-model="text"
+      :value="text"
+      @keyup="handleTextInput"
       placeholder="New Journal Entry for danielkelly_io"
     ></textarea>
     <EmojiField v-model="emoji" />
     <div class="entry-form-footer">
-      <span>{{ chartCount }} / 280</span>
+      <span>{{ chartCount }} / {{ maxCharsTextArea }}</span>
       <button>Remember <ArrowCircleRight width="20" /></button>
     </div>
   </form>
