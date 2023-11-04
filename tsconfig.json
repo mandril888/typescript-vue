@@ -5,7 +5,10 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "ignoreDeprecations": "5.0",
+    "importsNotUsedAsValues": "remove",
+    "preserveValueImports": false
   },
 
   "references": [
