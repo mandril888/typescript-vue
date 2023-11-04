@@ -12,7 +12,7 @@ const emoji = ref<Emoji | null>(null);
 const chartCount = computed(() => text.value.length);
 
 // events
-defineEmits<{
+const emit = defineEmits<{
   (event: "@create", entry: Entry): void;
 }>();
 
@@ -22,20 +22,20 @@ const handleTextInput = (event: Event) => {
   if (textarea.value.length <= maxCharsTextArea) text.value = textarea.value;
   else text.value = textarea.value = textarea.value.slice(0, maxCharsTextArea);
 };
+const handleSubmitForm = () => {
+  emit("@create", {
+    text: text.value,
+    emoji: emoji.value,
+    createdAt: new Date(),
+    userId: 1,
+    id: +Math.random().toFixed(2) * 100,
+  });
+  text.value = "";
+  emoji.value = null;
+};
 </script>
 <template>
-  <form
-    class="entry-form"
-    @submit.prevent="
-      $emit('@create', {
-        text,
-        emoji,
-        createdAt: new Date(),
-        userId: 1,
-        id: +Math.random().toFixed(2) * 100,
-      })
-    "
-  >
+  <form class="entry-form" @submit.prevent="handleSubmitForm">
     <textarea
       :value="text"
       @keyup="handleTextInput"
