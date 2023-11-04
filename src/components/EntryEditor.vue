@@ -3,10 +3,19 @@ import EmojiField from "@/components/EmojiField.vue";
 import ArrowCircleRight from "@/assets/icons/arrow-circle-right.svg";
 import Emoji from "@/types/Emoji";
 import { ref, computed } from "vue";
+
+// data
 const maxCharsTextArea = 280;
 const text = ref("");
 const emoji = ref<Emoji | null>(null);
 const chartCount = computed(() => text.value.length);
+
+// events
+defineEmits<{
+  (event: "@create", entry: { text: string; emoji: Emoji | null }): void;
+}>();
+
+// methods
 const handleTextInput = (event: Event) => {
   const textarea = event.target as HTMLTextAreaElement;
   if (textarea.value.length <= maxCharsTextArea) text.value = textarea.value;
@@ -14,7 +23,7 @@ const handleTextInput = (event: Event) => {
 };
 </script>
 <template>
-  <form class="entry-form" @submit.prevent>
+  <form class="entry-form" @submit.prevent="$emit('@create', { text, emoji })">
     <textarea
       :value="text"
       @keyup="handleTextInput"
