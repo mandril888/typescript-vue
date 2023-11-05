@@ -13,8 +13,27 @@ const user: User = reactive({
 });
 console.log(user.id);
 
+const journalEntries: Entry[] = reactive([
+  {
+    id: 1,
+    text: "Today I enjoyed walking the dog in the park.",
+    emoji: "happy",
+    createdAt: new Date(),
+    userId: 1,
+    username: "danielkelly_io",
+  },
+  {
+    id: 2,
+    text: "Clean the floor.",
+    emoji: "crying",
+    createdAt: new Date(),
+    userId: 2,
+    username: "madboy_12",
+  },
+]);
+
 const handleCreateEntry = (entry: Entry) => {
-  console.log(entry);
+  journalEntries.push(entry);
 };
 </script>
 
@@ -23,8 +42,8 @@ const handleCreateEntry = (entry: Entry) => {
     <TheHeader />
     <EntryEditor @@create="handleCreateEntry" />
     <ul>
-      <li>
-        <EntryCard />
+      <li v-for="entry in journalEntries" :key="entry.id">
+        <EntryCard :entry="entry" />
       </li>
     </ul>
   </main>

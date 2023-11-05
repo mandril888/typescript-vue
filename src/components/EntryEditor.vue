@@ -27,8 +27,9 @@ const handleSubmitForm = () => {
     text: text.value,
     emoji: emoji.value,
     createdAt: new Date(),
-    userId: 1,
+    userId: 3,
     id: +Math.random().toFixed(2) * 100,
+    username: "mandril888",
   });
   text.value = "";
   emoji.value = null;
@@ -39,12 +40,19 @@ const handleSubmitForm = () => {
     <textarea
       :value="text"
       @keyup="handleTextInput"
-      placeholder="New Journal Entry for danielkelly_io"
+      placeholder="New Journal Entry"
     ></textarea>
     <EmojiField v-model="emoji" />
     <div class="entry-form-footer">
       <span>{{ chartCount }} / {{ maxCharsTextArea }}</span>
-      <button>Remember <ArrowCircleRight width="20" /></button>
+      <button :disabled="chartCount < 3" :class="{ disabled: chartCount < 3 }">
+        Remember <ArrowCircleRight width="20" />
+      </button>
     </div>
   </form>
 </template>
+<style scoped>
+.disabled {
+  background-color: grey;
+}
+</style>
