@@ -3,13 +3,17 @@ import EmojiField from "@/components/EmojiField.vue";
 import ArrowCircleRight from "@/assets/icons/arrow-circle-right.svg";
 import Emoji from "@/types/Emoji";
 import Entry from "@/types/Entry";
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 
 // data
 const maxCharsTextArea = 280;
 const text = ref("");
 const emoji = ref<Emoji | null>(null);
 const chartCount = computed(() => text.value.length);
+
+// template refs
+const textarea = ref<HTMLTextAreaElement | null>(null);
+onMounted(() => textarea.value?.focus());
 
 // events
 const emit = defineEmits<{
@@ -39,6 +43,7 @@ const handleSubmitForm = () => {
   <form class="entry-form" @submit.prevent="handleSubmitForm">
     <textarea
       :value="text"
+      ref="textarea"
       @keyup="handleTextInput"
       placeholder="New Journal Entry"
     ></textarea>
