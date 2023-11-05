@@ -3,13 +3,16 @@ import EmojiField from "@/components/EmojiField.vue";
 import ArrowCircleRight from "@/assets/icons/arrow-circle-right.svg";
 import Emoji from "@/types/Emoji";
 import Entry from "@/types/Entry";
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, inject } from "vue";
+import { userInjectionKey } from "@/injectionKeys";
 
 // data
 const maxCharsTextArea = 280;
 const text = ref("");
 const emoji = ref<Emoji | null>(null);
 const chartCount = computed(() => text.value.length);
+const user = inject(userInjectionKey);
+const userName = user?.name || "Anonymous";
 
 // template refs
 const textarea = ref<HTMLTextAreaElement | null>(null);
@@ -33,7 +36,7 @@ const handleSubmitForm = () => {
     createdAt: new Date(),
     userId: 3,
     id: +Math.random().toFixed(2) * 100,
-    username: "mandril888",
+    username: userName,
   });
   text.value = "";
   emoji.value = null;
@@ -45,7 +48,7 @@ const handleSubmitForm = () => {
       :value="text"
       ref="textarea"
       @keyup="handleTextInput"
-      placeholder="New Journal Entry"
+      :placeholder="`New Journal Entry for ${userName}`"
     ></textarea>
     <EmojiField v-model="emoji" />
     <div class="entry-form-footer">
